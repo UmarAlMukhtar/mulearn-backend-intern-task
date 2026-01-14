@@ -1,10 +1,14 @@
 from django.urls import path
+from .views import RegisterView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
 urlpatterns = [
+    # User registration endpoint
+    path('register/', RegisterView.as_view(), name='register'),
+    
     # Login endpoint: returns access and refresh tokens
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     
