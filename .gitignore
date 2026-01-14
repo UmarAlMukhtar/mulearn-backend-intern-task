@@ -1,0 +1,67 @@
+# Byte-code and caches
+*.py[cod]
+__pycache__/
+*.pyc
+*$py.class
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Django REST Framework
+*.cache
+
+# Migrations (commit these, do not ignore)
+# migrations/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.eggs/
+
+# VS Code
+.vscode/
+.history/
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# General
+*.swp
+*.swo
+
+# VS Code
+.vscode/
+.history/
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# General
+*.swp
+*.swo
+
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
