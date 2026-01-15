@@ -153,6 +153,15 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Backend for Job/Internship listings with Role-Based Access',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    'COMPONENT_SPLIT_PATCH': True,
-    'COMPONENT_SPLIT_REQUEST': True,
+    'SECURITY': [{'Bearer': []}],
+    'APPEND_COMPONENTS': {
+        "securitySchemes": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "Token format: Bearer <your_token>"
+            }
+        }
+    }
 }
