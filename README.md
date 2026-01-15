@@ -1,15 +1,19 @@
-# Job/Internship Listing Backend API
+
+
+# Job Listing Backend API
 
 This is a RESTful backend service built with **Django** and **Django REST Framework (DRF)** for the MuLearn Tech Intern role. It features a complete role-based access control system for managing job listings.
 
 ## 🚀 Features
 
-* **Role-Based Access Control (RBAC):** Separate permissions for Admins, Companies, and Public users.
-* **JWT Authentication:** Secure login using `djangorestframework-simplejwt`.
-* **Job Management:** Companies can create/edit listings; Admins verify them.
-* **Advanced Filtering:** Filter by job type, location, skills, and status.
-* **API Documentation:** Interactive Swagger UI documentation.
-* **API Versioning:** Clean `/api/v1/` structure.
+* **Role-Based Access Control (RBAC):** Custom permissions for Admins, Companies, and Public users.
+* **JWT Authentication:** Secure token-based login using `SimpleJWT`.
+* **Job Management:** Comprehensive CRUD operations for job listings.
+* **Advanced Filtering & Search:** Search by title/description and filter by job type, location, skills, and status.
+* **API Documentation:** Fully documented OpenAPI 3.0 schema using `drf-spectacular`.
+* **API Versioning:** Future-proofed with `/api/v1/` routing.
+* **Soft Delete:** Data safety via `is_deleted` flags instead of hard deletion.
+* **Rate Limiting:** Throttling implemented on public endpoints to prevent abuse.
 
 ---
 
@@ -17,9 +21,10 @@ This is a RESTful backend service built with **Django** and **Django REST Framew
 
 * **Language:** Python 3.x
 * **Framework:** Django & Django REST Framework
-* **Database:** PostgreSQL (or SQLite)
+* **Database:** SQLite (Development) / PostgreSQL (Production ready)
 * **Auth:** SimpleJWT (JSON Web Tokens)
-* **Documentation:** drf-spectacular (OpenAPI 3.0)
+* **Filtering:** django-filter
+* **Documentation:** drf-spectacular (Swagger UI)
 
 ---
 
@@ -28,7 +33,7 @@ This is a RESTful backend service built with **Django** and **Django REST Framew
 ### 1. Clone the repository
 
 ```bash
-git clone https://www.github.com/UmarAlMukhtar/mulearn-intern-backend.git
+git clone https://www.github.com/UmarAlMukhtar/mulearn-backend-intern-task.git
 cd backend
 
 ```
@@ -79,8 +84,8 @@ The API will be available at `http://127.0.0.1:8000/`.
 
 ## 🔐 Authentication Flow
 
-1. **Register:** Create a user account at `/api/v1/accounts/register/` and select a role (`admin` or `company`).
-2. **Login:** Submit credentials to `/api/v1/accounts/login/` to receive an `access` and `refresh` token.
+1. **Register:** Create an account at `/api/v1/accounts/register/` choosing role `admin` or `company`.
+2. **Login:** Post credentials to `/api/v1/accounts/login/` to receive `access` and `refresh` tokens.
 3. **Authorize:** Use the `access` token in the header for protected routes:
 `Authorization: Bearer <your_access_token>`
 
@@ -90,9 +95,9 @@ The API will be available at `http://127.0.0.1:8000/`.
 
 | Role | Permissions |
 | --- | --- |
-| **Public** | Can view only **Verified** job listings. |
-| **Company** | Can create jobs and manage (edit/delete) **only their own** listings. |
-| **Admin** | Can view all listings and **Verify/Reject** any job post. |
+| **Public** | View only **Verified** jobs. Subject to rate limiting (10 req/min). |
+| **Company** | Create jobs. Manage (Update/Soft Delete) **only their own** listings. |
+| **Admin** | View all jobs (including drafts). **Verify/Reject** any job post. |
 
 ---
 
@@ -101,11 +106,12 @@ The API will be available at `http://127.0.0.1:8000/`.
 Interactive API documentation is available at:
 
 * **Swagger UI:** `http://127.0.0.1:8000/api/docs/`
+* **Redoc:** `http://127.0.0.1:8000/api/schema/redoc/`
 
 ---
 
-## 📝 Assumptions
+## 📝 Assumptions & Logic
 
-* A user must specify their role during registration.
-* Newly created jobs are set to `draft` status by default.
-* Skills must be created via the Django Admin or by an Admin user before being assigned to jobs.
+* **Soft Delete:** When a job is deleted, `is_deleted` is set to `True`. The record remains in the DB for auditing but is excluded from all API querysets.
+* **Verification Logic:** Companies cannot set their own job status to `Verified`. This must be done via the `/verify/` action by an Admin.
+* **Throttling:** Anonymous users are throttled to 10 requests per minute to ensure service stability.
