@@ -42,6 +42,7 @@ class Job(models.Model):
     skills = models.ManyToManyField(Skill, related_name='jobs')
     
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
