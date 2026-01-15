@@ -139,8 +139,10 @@ REST_FRAMEWORK = {
 
 # Swagger Settings
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Job Listing API',
-    'DESCRIPTION': 'MuLearn Internship Task API Documentation',
+    'TITLE': 'Mulearn Job Portal API',
+    'DESCRIPTION': 'Backend for Job/Internship listings with Role-Based Access',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_PATCH': True,
+    'COMPONENT_SPLIT_REQUEST': True,
 }
