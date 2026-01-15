@@ -8,6 +8,7 @@ from .serializers import JobSerializer
 from .permissions import IsAdminUserRole, IsCompanyUserRole, IsOwnerOrReadOnly
 from .models import Skill
 from .serializers import SkillSerializer
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
 class JobViewSet(viewsets.ModelViewSet):
     serializer_class = JobSerializer
@@ -70,7 +71,11 @@ class JobViewSet(viewsets.ModelViewSet):
         job.save()
         return Response({'status': 'job rejected'})
     
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    
 class SkillViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
     permission_classes = [permissions.AllowAny]
+    
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
