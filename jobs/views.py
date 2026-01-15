@@ -6,6 +6,8 @@ from django.db.models import Q
 from .models import Job
 from .serializers import JobSerializer
 from .permissions import IsAdminUserRole, IsCompanyUserRole, IsOwnerOrReadOnly
+from .models import Skill
+from .serializers import SkillSerializer
 
 class JobViewSet(viewsets.ModelViewSet):
     serializer_class = JobSerializer
@@ -67,3 +69,8 @@ class JobViewSet(viewsets.ModelViewSet):
         job.status = 'rejected'
         job.save()
         return Response({'status': 'job rejected'})
+    
+class SkillViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+    permission_classes = [permissions.AllowAny]
